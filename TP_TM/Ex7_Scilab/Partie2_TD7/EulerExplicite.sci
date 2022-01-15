@@ -5,7 +5,7 @@ function [u_explicite]=euler_explicite(t,m)
     dt= 1/m; //pas du temps, m=nombre des points
     
     for i = 1:m
-        u_explicite(i+1) = (1-dt) * u_explicite (i);
+        u_explicite(i+1) = u_explicite(i)*(1- dt*u_explicite (i));
     end
     
 endfunction

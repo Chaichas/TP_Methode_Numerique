@@ -12,11 +12,11 @@ function [u]=implicite(N,M)
     
     //Conditions aux bord
     u(1) = 0; //temperature fixe pour x = 0
-    u(N) = 0; //temperature fixe pour x = N
+    u(N+1) = 0; //temperature fixe pour x = N
     
     
     //Condition initiale: Temperature de toute la barre a t = 0
-        for i = 2:(N-1)
+        for i = 2:(N)
             [f]= func(i*Dt); //fonction definit dans un autre script
             u(i) = f;
          end
@@ -27,7 +27,7 @@ function [u]=implicite(N,M)
     //Expression de u en temps et en espace
     for j = 1:M //En temps
         for i=2: (N-1) //en espace
-            u(i)=(1-2*r)*u(i)+r*(u(i+1)+u(i-1));
+            
          end
     end
 endfunction

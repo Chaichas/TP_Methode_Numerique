@@ -39,37 +39,35 @@ int main(){
 	//******conditions du probleme******
 	
 	//Conditions aux bords
-	u[0] = 0.; //condition au 1er bord
-	//u[N] = 0.; //condition au dernier bord
+	u[0] = 0.; //condition au 1er bord 
 	
 	//Condition initiale
 	for (int i=1;  i<N; i++){
-		u[i] = f_2(i*dx); //fonction f_i
+		u[i] = f_1(i*dx); //fonction f_i
 	}
 	
-	//int k=0;
-	//for (int i = 0; i<=N; i++){
-		//fprintf(fichier, "%.6lf  %.6lf  %.6lf \n",k*dt, i*dx, u[i]);
-	//}
+	int k=0; //ecriture des points dans fichier
+	for (int i = 0; i<=N; i++){
+		fprintf(fichier, "%.6lf  %.6lf  %.6lf \n",k*dt, i*dx, u[i]);
+	}
 	
 	for (int j = 1; j<M; j++){
 		for (int i = 1; i<N-1; i++){
 			u[i] = (1.-2.*r)*u[i] + r*(u[i+1]+u[i-1]); //schema explicite
 		}
-		//if(j%(M/20)==0){
-			//for (int i = 0; i<=N; i++){
-				//fprintf(fichier, "%.6lf  %.6lf  %.6lf \n",j*dt, i*dx, u[i]);
-			//}
-		//}
-	}
+		if(j%(M/20)==0){ //affichage 3D
+			for (int i = 0; i<=N; i++){
+				fprintf(fichier, "%.6lf  %.6lf  %.6lf \n",j*dt, i*dx, u[i]);
+			}
+		}
+	}	
 	
-	
-	//affichage
-	for (int i=0; i<=N; i++){
-		u[N] = 0.; //condition au dernier bord
-		printf("%.6lf  %.6lf \n",i*dx, u[i]); //u en fonction de l'espace
-		fprintf(fichier, "%.6lf  %.6lf \n",i*dx, u[i]); //u en fonction de l'espace dans le fichier
-	}
+	//affichage 2D
+	//for (int i=0; i<=N; i++){
+		//u[N] = 0.; //condition au dernier bord
+		//printf("%.6lf  %.6lf \n",i*dx, u[i]); //u en fonction de l'espace
+		//fprintf(fichier, "%.6lf  %.6lf \n",i*dx, u[i]); //u en fonction de l'espace dans le fichier
+	//}
 	
 	return 0;
 }

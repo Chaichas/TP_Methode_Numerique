@@ -41,7 +41,6 @@ int main(){
 	
 	//Initialisation du vecteur u
 	double u[N+1][M+1]; //initialisation tab de dim N+1 * N+1
-	double v[N+1][M+1];
 	
 		
 	//******conditions du probleme******

@@ -1,7 +1,6 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <math.h> 
-#include "matrice.c"
 
 
 //fonction 1
@@ -28,7 +27,10 @@ double exper;
 int main(){
 
 	FILE *fichier;
-	fichier = fopen ("ftcs.dat", "w");
+	fichier = fopen ("implicite.dat", "w");
+	
+	FILE *fichier2;
+	fichier2 = fopen ("implicite_3D.dat", "w");
 	
 	//******Declaration des variables******
 	int N = 100, M = 10000; //nombre des points selon l espace et le temps
@@ -38,45 +40,51 @@ int main(){
 	double r=dt/(dx*dx);
 	
 	//Initialisation du vecteur u
-	double u[N+1]; //initialisation tab de dim N
+	double u[N+1][M+1]; //initialisation tab de dim N+1 * N+1
+	double v[N+1][M+1];
 	
-	//Initialisation de la matrice A
-	double A[N+1][N+1]; //initialisation de la matrice A
 		
-	
 	//******conditions du probleme******
 	
 	//Conditions aux bords
-	u[0] = 0.; //condition au 1er bord
-	u[N] = 0.; //condition au dernier bord
-	
-	A[0][0]=1; //1er element du matrice A
-	A[N][N]=1; //Dernier element du matrice A
+	for (int j=0; j<=M;j++){
+		u[0][j]=0.; //1er bord
+		u[N][j]=0.; //2eme bord
+	}
 	
 	//Condition initiale
 	for (int i=1;  i<N; i++){
-		u[i] = f_1(i*dx); //fonction f_i
-	}
+		u[i][0] = f_2(i*dx); //fonction f_i
+	}	
 	
-	
-	for (int j = 0; j<=M; j++){
-		for (int i = 0; i<=N; i++){
-		
-			u[i] = A[i][i] * u[i];
+	//initialisation des u[i][j] a l'interieur, except conditions aux bords
+	for (int i=1;  i<N; i++){
+		for (int j=1;  j<M; j++){
+			u[i][j] = 0.;
 		}
-		//if(j%(M/20)==0){
-			//for (int i = 0; i<=N; i++){
-				//fprintf(fichier, "%.6lf  %.6lf  %.6lf \n",j*dt, i*dx, u[i]);
-			//}
-		//}
 	}
 	
 	
-	//affichage
+	//Schema implicite
+	for (int j = 1; j<M; j++){
+		for (int i = 1; i<N; i++){
+		
+			u[i][j] = (-1.*r)*u[i+1][j+1] + (1+2.*r)*u[i][j+1] + (-1.*r)*u[i-1][j+1];
+		}		
+	}	
+	
+	//affichage 2D
 	for (int i=0; i<=N; i++){
-		u[N] = 0.; //condition au dernier bord
-		printf("%.6lf  %.6lf \n",i*dx, u[i]); //u en fonction de l'espace
-		fprintf(fichier, "%.6lf  %.6lf \n",i*dx, u[i]); //u en fonction de l'espace dans le fichier
+		printf("%.6lf  %.6lf \n",i*dx, u[i][0]); //u en fonction de l'espace
+		fprintf(fichier, "%.6lf  %.6lf \n",i*dx, u[i][0]); //u en fonction de l'espace dans le fichier
+	}
+	
+	//affichage 3D  
+	for (int i=0; i<=N; i++){
+			for (int j=0; j<=M; j+=100){
+				printf("%.6lf  %.6lf %.6lf \n",i*dx, j*dt, u[i][j]); //u en fonction de l'espace
+				fprintf(fichier2, " %.6lf  %.6lf %.6lf \n",i*dx, j*dt, u[i][j]); //u en fonction de l'espace dans le fichier2
+		}	
 	}
 		 
 	return 0;

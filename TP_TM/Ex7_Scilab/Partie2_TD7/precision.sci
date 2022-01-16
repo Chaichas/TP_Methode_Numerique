@@ -1,11 +1,11 @@
 t =1; //temps
-m=40; //nombre de points
+m=100; //nombre de points
 dt= 1/m; //pas du temps
 
-[u_exacte]= solution_exacte(t); //solution exacte
-[u_numerique]=solution_numerique(t,m); //solution numerique
-[u_explicite]=euler_explicite(t,m); //Euler explicite
-[u_implicite]=euler_implicite(t,m); //Euler implicite
+[u_exacte]= solution_exacte(t); //solution exacte, systeme (E2)
+[u_numerique]=solution_numerique(t,m); //solution numerique, systeme (E2)
+[u_explicite]=euler_explicite(t,m); //Euler explicite, systeme (E2)
+[u_implicite]=euler_implicite(t,m); //Euler implicite, systeme (E2)
 
 //Erreurs relatives
 

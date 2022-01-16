@@ -1,8 +1,9 @@
 //Diffusion thermique dans une plaque
-function [u]=implicite(N,M)
-    //[M+1, N+1]=size(A);
-    A=zeros(N,N);
-    u=zeros(N,1);
+function [u]=Crank_Nicholson(N,M)
+
+    A1=zeros(N,N); //initialisation du matrice A1
+    A2=zeros(N,N); //initialisation du matrice A2
+    u=zeros(N,1); //initialisation du vecteur u
     
     //Donnees de x
     Dx= 1/N; //pas en x
@@ -26,11 +27,12 @@ function [u]=implicite(N,M)
          end
 
     //Matrice A
-    A = diag((1+2*r)*ones(1,N)) + diag(-r * ones (1,N-1),1) + +diag(-r * ones(1,N-1),-1);
+    A1 = diag((1+2*r)*ones(1,N)) + diag(-r * ones (1,N-1),1) + +diag(-r * ones(1,N-1),-1);
+    A2 = diag((-1-2*r)*ones(1,N)) + diag(r * ones (1,N-1),1) + +diag(r * ones(1,N-1),-1);
     
     //Expression de u en temps et en espace
     for j = 1:M //En temps
-        u=A\u;
+        u=A1\(A2*u); //resolution  du systeme (2.84)
     end
 endfunction
 funcprot(0)

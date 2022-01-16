@@ -1,7 +1,10 @@
-all: schema
+all: schema_Explicite Schema_Implicite
 
-schema: Schema_Explicite.c
+schema_Explicite: Schema_Explicite.c
+	gcc -g -Ofast -funroll-loops -finline-functions -ftree-vectorize $< -o $@ -lm -lSDL2
+	
+Schema_Implicite: Schema_Implicite.c
 	gcc -g -Ofast -funroll-loops -finline-functions -ftree-vectorize $< -o $@ -lm -lSDL2
 	
 clean:
-	rm -Rf *~ schema
+	rm -Rf *~ schema_Explicite Schema_Implicite
